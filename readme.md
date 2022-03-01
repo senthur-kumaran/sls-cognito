@@ -1,0 +1,10 @@
+## How to run the project in the local machine
+
+* Clone the project.
+* `cd` into the project folder.
+* Run `npm install`.
+* Run `serverless deploy`.
+
+## Summary
+
+* Built a simple authentication using Serverless Framework (Node.js, API Gateway, Lambda, Cognito) with ESlint standard.

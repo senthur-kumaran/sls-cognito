@@ -1,0 +1,84 @@
+service: sls-cognito
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: us-east-1
+
+  environment:
+    userPoolId:
+      Ref: CognitoUserPool
+    clientId:
+      Ref: CognitoUserPoolClient
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - cognito-idp:AdminInitiateAuth
+            - cognito-idp:AdminCreateUser
+            - cognito-idp:AdminSetUserPassword
+          Resource: "*"
+
+functions:
+  register:
+    handler: src/handler/auth/register.handler
+    events:
+      - http:
+          path: user/register
+          method: post
+          cors: true
+
+  login:
+    handler: src/handler/auth/login.handler
+    events:
+      - http:
+          path: user/login
+          method: post
+          cors: true
+
+  profile:
+    handler: src/handler/user/profile.handler
+    events:
+      - http:
+          path: user/profile
+          method: get
+          cors: true
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - CognitoUserPool
+                - Arn
+            claims:
+              - email
+
+resources:
+  Resources:
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:provider.stage}-user-pool
+        Schema:
+          - Name: email
+            Required: true
+            Mutable: true
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
+        AutoVerifiedAttributes: ["email"]
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${self:provider.stage}-user-pool-client
+        UserPoolId:
+          Ref: CognitoUserPool
+        ExplicitAuthFlows:
+          - ADMIN_NO_SRP_AUTH
+        GenerateSecret: false
