@@ -4,7 +4,8 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint:dry": "./node_modules/.bin/eslint --fix-dry-run .",
+    "lint:fix": "./node_modules/.bin/eslint --fix ."
   },
   "keywords": [],
   "author": "",
