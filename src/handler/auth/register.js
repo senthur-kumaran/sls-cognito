@@ -1,12 +1,13 @@
 const AWS = require('aws-sdk');
 const { sendResponse, validateInput } = require('../../utils/helpers');
+const statusCode = require('../../utils/constants');
 
 const cognito = new AWS.CognitoIdentityServiceProvider();
 
 module.exports.handler = async (event) => {
   try {
     const isValid = validateInput(event.body);
-    if (!isValid) return sendResponse(400, { message: 'Invalid input' });
+    if (!isValid) return sendResponse(statusCode.BAD_REQUEST, { message: 'Invalid input' });
 
     const { email, password } = JSON.parse(event.body);
     const { userPoolId } = process.env;
@@ -34,9 +35,9 @@ module.exports.handler = async (event) => {
       };
       await cognito.adminSetUserPassword(paramsForSetPass).promise();
     }
-    return sendResponse(200, { message: 'User registration successful' });
+    return sendResponse(statusCode.OK, { message: 'User registration successful' });
   } catch (error) {
     const message = error.message ? error.message : 'Internal server error';
-    return sendResponse(500, { message });
+    return sendResponse(statusCode.INTERNAL_SERVER_ERROR, { message });
   }
 };
