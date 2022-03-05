@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const { sendResponse, validateInput } = require('../../utils/helpers');
-const statusCode = require('../../utils/constants');
+const statusCode = require('../../utils/statusCode');
 
 const cognito = new AWS.CognitoIdentityServiceProvider();
 
@@ -11,6 +11,8 @@ module.exports.handler = async (event) => {
 
     const { email, password } = JSON.parse(event.body);
     const { userPoolId, clientId } = process.env;
+    // Non-SRP authentication flow;
+    // you can pass in the USERNAME and PASSWORD directly if the flow is enabled for calling the app client
     const params = {
       AuthFlow: 'ADMIN_NO_SRP_AUTH',
       UserPoolId: userPoolId,

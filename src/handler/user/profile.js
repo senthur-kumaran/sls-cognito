@@ -1,5 +1,5 @@
 const { sendResponse } = require('../../utils/helpers');
-const statusCode = require('../../utils/constants');
+const statusCode = require('../../utils/statusCode');
 
 module.exports.handler = async (event) => sendResponse(
   statusCode.OK,

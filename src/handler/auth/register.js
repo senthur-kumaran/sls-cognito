@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const { sendResponse, validateInput } = require('../../utils/helpers');
-const statusCode = require('../../utils/constants');
+const statusCode = require('../../utils/statusCode');
 
 const cognito = new AWS.CognitoIdentityServiceProvider();
 
@@ -23,7 +23,7 @@ module.exports.handler = async (event) => {
           Name: 'email_verified',
           Value: 'true', // Email verified manually only testing purpose.
         }],
-      MessageAction: 'SUPPRESS',
+      MessageAction: 'SUPPRESS', // Suppress sending the email
     };
     const response = await cognito.adminCreateUser(params).promise();
     if (response.User) {
