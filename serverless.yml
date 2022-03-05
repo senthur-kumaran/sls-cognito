@@ -81,7 +81,6 @@ resources:
       Properties:
         RoleName: RegisterUserRole
         AssumeRolePolicyDocument:
-          Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Principal:
@@ -91,7 +90,6 @@ resources:
         Policies:
           - PolicyName: RegisterUserPolicy
             PolicyDocument:
-              Version: '2012-10-17'
               Statement:
                 - Effect: Allow
                   Action:
@@ -115,7 +113,6 @@ resources:
       Properties:
         RoleName: LoginUserRole
         AssumeRolePolicyDocument:
-          Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Principal:
@@ -125,7 +122,6 @@ resources:
         Policies:
           - PolicyName: LoginUserUserPolicy
             PolicyDocument:
-              Version: '2012-10-17'
               Statement:
                 - Effect: Allow
                   Action:
